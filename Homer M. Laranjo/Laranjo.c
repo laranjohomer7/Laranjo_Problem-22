@@ -1,57 +1,42 @@
 #include <stdio.h>
 
-int main()
-{
-    double loanAmount = 20000.00;
-    double remainingBalance = loanAmount;
-    double totalPayments = 0.00;
-    double payment;
-    int plannedPayments;
-    int paymentNumber;
+int main() {
+    int loan = 20000;
+    int balance = loan;
+    int total = 0;
+    int payments, payment;
 
-    printf("Enter the number of planned payments: ");
-    if (scanf("%d", &plannedPayments) != 1) {
+    printf("Enter number of payments: ");
+    scanf("%d", &payments);
+
+    if (payments <= 0) {
         printf("Invalid number of payments.\n");
-        return 1;
+        return 0;
     }
 
-    if (plannedPayments <= 0) {
-        printf("The number of planned payments must be greater than zero.\n");
-        return 1;
-    }
+    for (int i = 1; i <= payments && balance > 0; i++) {
+        printf("Enter payment %d: ", i);
+        scanf("%d", &payment);
 
-    paymentNumber = 1;
-
-    while (paymentNumber <= plannedPayments && remainingBalance > 0.00) {
-        printf("Enter payment %d amount: ", paymentNumber);
-
-        if (scanf("%lf", &payment) != 1) {
+        if (payment <= 0) {
             printf("Invalid payment amount.\n");
-            return 1;
-        }
-
-        if (payment <= 0.00) {
-            printf("Payment rejected: the amount must be greater than zero.\n");
-        } else if (payment > remainingBalance) {
-            printf("Payment rejected: it exceeds the remaining balance of %.2f pesos.\n",
-                   remainingBalance);
+        } else if (payment > balance) {
+            printf("Payment exceeds remaining balance.\n");
         } else {
-            totalPayments = totalPayments + payment;
-            remainingBalance = remainingBalance - payment;
+            total = total + payment;
+            balance = balance - payment;
 
-            printf("Remaining balance: %.2f pesos\n", remainingBalance);
+            printf("Remaining balance: %d pesos\n", balance);
         }
-
-        paymentNumber = paymentNumber + 1;
     }
 
-    printf("\nTotal payments received: %.2f pesos\n", totalPayments);
-    printf("Remaining balance: %.2f pesos\n", remainingBalance);
+    printf("\nTotal payments: %d pesos\n", total);
+    printf("Remaining balance: %d pesos\n", balance);
 
-    if (remainingBalance == 0.00) {
-        printf("The loan has been fully paid.\n");
+    if (balance == 0) {
+        printf("Loan fully paid.\n");
     } else {
-        printf("The loan has not been fully paid.\n");
+        printf("Loan not fully paid.\n");
     }
 
     return 0;
